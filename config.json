@@ -1,0 +1,17 @@
+{
+    "debug": true,
+    "server": {
+        "address":":2020"
+    },
+    "context" : {
+        "timeout": 2
+    },
+    "database": {
+        "host" : "localhost",
+        "port" : "5432",
+        "user" : "postgres",
+        "password" : "developer",
+        "name" : "lumen_db",
+        "sslmode": "disable"
+    }
+}
