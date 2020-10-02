@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	_ "github.com/lib/pq"
-	"github.com/spf13/viper"
 )
 
 /*
@@ -16,24 +17,17 @@ import (
 	like a "constructor"
 */
 func init() {
-	viper.SetConfigFile(`config.json`)
-	err := viper.ReadInConfig()
-
-	if err != nil {
+	if err := godotenv.Load(); err != nil {
 		panic(err)
-	}
-
-	if viper.GetBool(`debug`) {
-		log.Println("Service RUN on debug mode")
 	}
 }
 
 func main() {
-	dbHost := viper.GetString(`database.host`)
-	dbUser := viper.GetString(`database.user`)
-	dbPass := viper.GetString(`database.pass`)
-	dbName := viper.GetString(`database.name`)
-	dbSSL := viper.GetString(`database.sslmode`)
+	dbHost := os.Getenv("DB_HOST")
+	dbUser := os.Getenv("DB_USER")
+	dbPass := os.Getenv("DB_PASS")
+	dbName := os.Getenv("DB_NAME")
+	dbSSL := os.Getenv("DB_SSL")
 
 	/*
 		Connection database defined by url
@@ -66,7 +60,7 @@ func main() {
 	e := echo.New()
 	e.GET("/test", testServer)
 
-	log.Fatal(e.Start(viper.GetString("server.address")))
+	log.Fatal(e.Start(fmt.Sprintf(":%s", os.Getenv("PORT"))))
 }
 
 func testServer(c echo.Context) error {
