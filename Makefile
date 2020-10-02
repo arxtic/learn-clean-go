@@ -6,3 +6,7 @@ dev:
 
 build:
 	go build -o ./dist/main ./app
+
+start:
+	chmod +x ./dist/main
+	./dist/main
